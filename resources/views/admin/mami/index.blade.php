@@ -23,34 +23,32 @@
                                 @php
                                     $i = 0;
                                 @endphp
-                                {{-- @forelse($data as $row) --}}
+                                @forelse($products as $product)
                                     <tr>
-                                        <td class="text-center">{{ ++$i }}</td>
-                                        <td>produk</td>
-                                        <td>kategori</td>
-                                        <td>mitra</td>
-                                        <td>harga</td>
-                                        <td>stok</td>
+                                        <td>{{ ++$i }}</td>
+                                        <td>{{$product->name}}</td>
+                                        <td>{{$product->category->name}}</td>
+                                        <td>{{$product->mitra->name}}</td>
+                                        <td>{{$product->price}}</td>
+                                        <td>{{$product->stock}}</td>
                                         <td class="text-center">
-                                            <form action=""
-                                                method="POST">
-                                                <a class="btn btn-warning btn-sm"
-                                                    href="">Edit</a>
+                                            <form action="{{ route('mami.destroy',Crypt::encrypt($product->id)) }}"method="POST">
+                                                <a href="{{ route('mami.edit',Crypt::encrypt($product->id)) }}" class="btn btn-warning btn-sm">Edit</a>
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Delete</button>
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
                                             </form>
                                         </td>
                                     </tr>
-                                {{-- @empty --}}
+                                @empty
                                     <tr>
                                         <td colspan="8">No record found</td>
                                     </tr>
-                                {{-- @endforelse --}}
+                                @endforelse
                             </tbody>
                         </table>
-                        {{-- {{ $data->links() }} --}}
+                        {{ $products->links() }}
                     </div>
                     <div class="card-footer text-right">
                         <a href="" class="btn btn-primary">Tambah Data</a>
