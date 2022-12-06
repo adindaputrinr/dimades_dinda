@@ -1,7 +1,7 @@
 @extends('admin.layout')
 @section('content')
-    <form action="" method="post">
-    {{-- {{csrf_field()}} --}}
+    <form action="{{ route('food.store) }}" method="post">
+    {{csrf_field()}}
     <div class="content">
         <div class="row">
             <div class="col-lg-6">
@@ -18,28 +18,29 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Mitra</label>
-                        <select class="form-control" name="jk">
-                            <option>Pilih Mitra</option>
-                            <option value="Laki-Laki" >mitra 1</option>
-                            <option value="Perempuan" >mitra 2</option>
+                        <select class="form-control" name="mitra_id">
+                            @foreach($mitra as $data)
+                            <option value="{{$data->id}}" {{old('mitra_id') == $data->id ? 'selected' : ''}}>{{$data->name}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Kategori</label>
-                        <select class="form-control" name="jk">
-                            <option>Pilih Kategori</option>
-                            <option value="Laki-Laki" >Kategori 1</option>
-                            <option value="Perempuan" >Kategori 2</option>
+                        <select class="form-control" name="category_id">
+                        @foreach($category as $data)
+                            <option value="{{$data->id}}" {{old('category_id') == $data->id ? 'selected' : ''}}>{{$data->name}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Harga</label>
-                        <input type="text" name="notelp" class="form-control" value="{{old('notelp')}}">
+                        <input type="text" name="price" class="form-control" value="{{old('price')}}">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Stok</label>
-                        <input type="email" name="email" class="form-control" value="{{old('email')}}">
+                        <input type="number" name="stock" class="form-control" value="{{old('stock')}}">
                     </div>
+                    <input type="hidden" name="type" value="1">
                     <div class="form-footer pt-5 border-top">
                         <button type="submit" class="btn btn-primary btn-default">Simpan</button>
                         <a href="" class="btn btn-secondary btn-default">Kembali</a>

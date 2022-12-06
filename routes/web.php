@@ -22,4 +22,4 @@ Route::resource('admin/categories', CategoriesController::class)->middleware('au
 // Route::get('/mami', function(){
 //     return view('admin.mami.index');
 // });
-Route::resource('admin/mami', FoodProductController::class)->middleware('auth')->names('mami');
+Route::resource('admin/mami', FoodProductController::class)->middleware('auth')->names('food');

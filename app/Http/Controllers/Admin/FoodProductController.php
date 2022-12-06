@@ -3,8 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\CategoriesController;
+use App\Http\Controllers\Admin\MitraController;
+use App\Models\Categories;
+use App\Models\Mitra;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Session;
 
 class FoodProductController extends ProductController implements ControllerInterface
 {
@@ -27,7 +33,11 @@ class FoodProductController extends ProductController implements ControllerInter
      */
     public function create()
     {
-        //
+        $category = Categories::orderBy('name','ASC')->get();
+        $mitra = Mitra::orderBy('name', 'ASC')->get();
+        $this->data['category'] = $category;
+        $this->data['mitra'] = $mitra;
+        return view('admin.mami.create', $this->data);
     }
 
     /**
@@ -38,7 +48,19 @@ class FoodProductController extends ProductController implements ControllerInter
      */
     public function store(Request $request)
     {
-        //
+        $params = $request->all();
+        $params['type'] = '1';
+        try {
+            if (Product::create($params)) {
+                Session::flash('success', 'Product has been saved');
+            } else {
+                Session::flash('error', 'Product could not be saved');
+            }
+            return redirect()->route('food.index');
+        } catch (\Throwable $th) {
+            Session::flash('error', "Periksa kembali isian");
+            return redirect()->back();
+        }
     }
 
     /**
@@ -60,7 +82,13 @@ class FoodProductController extends ProductController implements ControllerInter
      */
     public function edit($id)
     {
-        //
+        $category = Categories::orderBy('name','ASC')->get();
+        $mitra = Mitra::orderBy('name', 'ASC')->get();
+        $product = Product::findOrFall(Crypt::decrypt($id));
+        $this->data['category'] = $category;
+        $this->data['mitra'] = $mitra;
+        $this->data['data'] = $product;
+        return view('admin.mami.edit', $this->data);
     }
 
     /**
@@ -72,7 +100,20 @@ class FoodProductController extends ProductController implements ControllerInter
      */
     public function update(Request $request, $id)
     {
-        //
+        $params = $request->all();
+        $params['type'] = '1';
+        try {
+            $product = Product::findOrFall(Crypt::decrypt($id));
+            if ($product->update($params)) {
+                Session::flash('success', 'Product has been saved');
+            } else {
+                Session::flash('error', 'Product could not be saved');
+            }
+            return redirect()->route('food.index');
+        } catch (\Throwable $th) {
+            Session::flash('error', "Periksa kembali isian");
+            return redirect()->back();
+        }
     }
 
     /**
@@ -83,6 +124,10 @@ class FoodProductController extends ProductController implements ControllerInter
      */
     public function destroy($id)
     {
-        //
+        $product = Product::findOrFall(Crypt::decrypt($id));
+        if ($product->delete()) {
+            Session::flash('success', 'Product has been deleted');
+        }
+        return redirect()->route('food.index');
     }
 }

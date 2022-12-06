@@ -39,6 +39,12 @@
                         <span class="nav-text">Kategori</span> <b class="caret"></b>
                     </a>
                 </li>
+                <li class="{{ Request::path()=="admin/>food" ? 'active' : ''}}">
+                    <a class="sidenav-item-link" href="{{ route('food.index') }}" aria-expanded="false" aria-controls="dashboard">
+                        <i class="mdi mdi-note-multiple-outline"></i>
+                        <span class="nav-text">Produk</span> <b class="caret"></b>
+                    </a>
+                </li>
             </ul>
         </div>
 

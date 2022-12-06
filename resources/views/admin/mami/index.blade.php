@@ -32,8 +32,8 @@
                                         <td>{{$product->price}}</td>
                                         <td>{{$product->stock}}</td>
                                         <td class="text-center">
-                                            <form action="{{ route('mami.destroy',Crypt::encrypt($product->id)) }}"method="POST">
-                                                <a href="{{ route('mami.edit',Crypt::encrypt($product->id)) }}" class="btn btn-warning btn-sm">Edit</a>
+                                            <form action="{{ route('food.destroy',Crypt::encrypt($product->id)) }}"method="POST">
+                                                <a href="{{ route('food.edit',Crypt::encrypt($product->id)) }}" class="btn btn-warning btn-sm">Edit</a>
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm"
@@ -51,7 +51,7 @@
                         {{ $products->links() }}
                     </div>
                     <div class="card-footer text-right">
-                        <a href="" class="btn btn-primary">Tambah Data</a>
+                        <a href="{{route('food.create')}}" class="btn btn-primary">Tambah Data</a>
                     </div>
                 </div>
             </div>
